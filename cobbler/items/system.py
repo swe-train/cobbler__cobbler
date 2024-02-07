@@ -10,6 +10,8 @@ V3.4.0 (unreleased):
         * Constructor: ``kwargs`` can now be used to seed the item during creation.
         * ``from_dict()``: The method was moved to the base class.
         * ``parent``: The property was moved to the base class.
+    * Removed:
+        * ``fetchable_files``
 V3.3.4 (unreleased):
     * Changed:
         * The network interface ``default`` is not created on object creation.
@@ -279,7 +281,6 @@ class System(Item):
         # Overwrite defaults from item.py
         self._owners = enums.VALUE_INHERITED
         self._boot_files = enums.VALUE_INHERITED
-        self._fetchable_files = enums.VALUE_INHERITED
         self._autoinstall_meta = enums.VALUE_INHERITED
         self._kernel_options = enums.VALUE_INHERITED
         self._kernel_options_post = enums.VALUE_INHERITED

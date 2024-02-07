@@ -9,6 +9,8 @@ V3.4.0 (unreleased):
         * ``children``: The property was moved to the base class.
         * ``parent``: The property was moved to the base class.
         * ``from_dict()``: The method was moved to the base class.
+    * Removed:
+        * ``fetchable_files``
 V3.3.4 (unreleased):
     * No changes
 V3.3.3:
@@ -222,7 +224,6 @@ class Profile(item.Item):
 
         # Overwrite defaults from item.py
         self._boot_files: Union[Dict[Any, Any], str] = enums.VALUE_INHERITED
-        self._fetchable_files: Union[Dict[Any, Any], str] = enums.VALUE_INHERITED
         self._autoinstall_meta: Union[Dict[Any, Any], str] = enums.VALUE_INHERITED
         self._kernel_options: Union[Dict[Any, Any], str] = enums.VALUE_INHERITED
         self._kernel_options_post: Union[Dict[Any, Any], str] = enums.VALUE_INHERITED
