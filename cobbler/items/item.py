@@ -18,6 +18,7 @@ V3.4.0 (unreleased):
         * ``mgmt_classes``
         * ``mgmt_parameters``
         * ``fetchable_files``
+        * ``last_cached_mtime``
 V3.3.4 (unreleased):
     * No changes
 V3.3.3:
@@ -265,7 +266,6 @@ class Item:
             and "__" not in name
             and name
             not in {
-                "_last_cached_mtime",
                 "_cache",
                 "_supported_boot_loaders",
                 "_has_initialized",
@@ -320,7 +320,6 @@ class Item:
         self._autoinstall_meta: Union[Dict[Any, Any], str] = {}
         self._boot_files: Union[Dict[Any, Any], str] = {}
         self._template_files: Dict[str, Any] = {}
-        self._last_cached_mtime = 0
         self._owners: Union[List[Any], str] = enums.VALUE_INHERITED
         self._cache: ItemCache = ItemCache(api)
         self._is_subobject = is_subobject
