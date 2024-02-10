@@ -211,7 +211,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 from cobbler import autoinstall_manager, enums, power_manager, utils, validate
 from cobbler.cexceptions import CX
 from cobbler.decorator import InheritableProperty, LazyProperty
-from cobbler.items.item import Item
+from cobbler.items.abstract import item_bootable
 from cobbler.items.network_interface import NetworkInterface
 from cobbler.utils import filesystem_helpers, input_converters
 
@@ -219,7 +219,7 @@ if TYPE_CHECKING:
     from cobbler.api import CobblerAPI
 
 
-class System(Item):
+class System(item_bootable.BootableItem):
     """
     A Cobbler system object.
     """
@@ -1474,3 +1474,66 @@ class System(Item):
         :param display_name: The new display_name. If ``None`` the display_name will be set to an emtpy string.
         """
         self._display_name = display_name
+
+    def find_match_single_key(
+        self, data: Dict[str, Any], key: str, value: Any, no_errors: bool = False
+    ) -> bool:
+        """
+        Look if the data matches or not. This is an alternative for ``find_match()``.
+
+        :param data: The data to search through.
+        :param key: The key to look for int the item.
+        :param value: The value for the key.
+        :param no_errors: How strict this matching is.
+        :return: Whether the data matches or not.
+        """
+        # special case for systems
+        key_found_already = False
+        if "interfaces" in data:
+            if key in [
+                "cnames",
+                "connected_mode",
+                "if_gateway",
+                "ipv6_default_gateway",
+                "ipv6_mtu",
+                "ipv6_prefix",
+                "ipv6_secondaries",
+                "ipv6_static_routes",
+                "management",
+                "mtu",
+                "static",
+                "mac_address",
+                "ip_address",
+                "ipv6_address",
+                "netmask",
+                "virt_bridge",
+                "dhcp_tag",
+                "dns_name",
+                "static_routes",
+                "interface_type",
+                "interface_master",
+                "bonding_opts",
+                "bridge_opts",
+                "interface",
+            ]:
+                key_found_already = True
+                for (name, interface) in list(data["interfaces"].items()):
+                    if value == name:
+                        return True
+                    if value is not None and key in interface:
+                        if self._find_compare(interface[key], value):
+                            return True
+
+        if key not in data:
+            if not key_found_already:
+                if not no_errors:
+                    # FIXME: removed for 2.0 code, shouldn't cause any problems to not have an exception here?
+                    # raise CX("searching for field that does not exist: %s" % key)
+                    return False
+            else:
+                if value is not None:  # FIXME: new?
+                    return False
+
+        if value is None:
+            return True
+        return self._find_compare(value, data[key])

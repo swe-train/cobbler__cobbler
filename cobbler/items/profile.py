@@ -169,7 +169,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 from cobbler import autoinstall_manager, enums, validate
 from cobbler.cexceptions import CX
 from cobbler.decorator import InheritableProperty, LazyProperty
-from cobbler.items import item
+from cobbler.items.abstract import item_bootable
 from cobbler.utils import input_converters
 
 if TYPE_CHECKING:
@@ -177,7 +177,7 @@ if TYPE_CHECKING:
     from cobbler.items.distro import Distro
 
 
-class Profile(item.Item):
+class Profile(item_bootable.BootableItem):
     """
     A Cobbler profile object.
     """

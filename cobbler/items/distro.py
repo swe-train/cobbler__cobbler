@@ -131,14 +131,14 @@ from typing import TYPE_CHECKING, Any, Dict, List, Union
 from cobbler import enums, grub, utils, validate
 from cobbler.cexceptions import CX
 from cobbler.decorator import InheritableProperty, LazyProperty
-from cobbler.items import item
+from cobbler.items.abstract import item_bootable
 from cobbler.utils import input_converters, signatures
 
 if TYPE_CHECKING:
     from cobbler.api import CobblerAPI
 
 
-class Distro(item.Item):
+class Distro(item_bootable.BootableItem):
     """
     A Cobbler distribution object
     """
